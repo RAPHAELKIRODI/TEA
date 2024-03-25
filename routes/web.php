@@ -2,6 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\AuthenticatedSessionController;
+use App\Http\Controllers\UserController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -14,7 +17,7 @@ use App\Http\Controllers\HomeController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('login');
 });
 
 Route::middleware([
@@ -23,7 +26,14 @@ Route::middleware([
     'verified',
 ])->group(function () {
     Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+        return view('welcome');
+    })->name('welcome');
 });
+
 route::get('/redirect',[HomeController::class,'redirect']);
+
+Route::get('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
+
+
+Route::get('/profile', [UserController::class, 'profile'])->name('profile');
+Route::post('/profile/update', [UserController::class, 'updateProfile'])->name('profile.update');
